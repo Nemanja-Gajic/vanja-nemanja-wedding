@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/", "destination": "/vanja-i-nemanja.html" }]
+}

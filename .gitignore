@@ -1,0 +1,8 @@
+# Original PDF (embedded as base64 in HTML)
+*.pdf
+
+# Backups
+*.backup-*.html
+
+# Claude internal
+.claude/
