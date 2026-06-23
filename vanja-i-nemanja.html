@@ -290,7 +290,7 @@
 
   /* ---------- Program ---------- */
   .program{background:var(--muted-bg);}
-  .prog-list{max-width:560px;margin:3rem auto 0;}
+  .prog-list{max-width:560px;margin:3rem auto 0;text-align:left;}
   .prog-row{
     display:flex;align-items:baseline;gap:1.5rem;
     padding:1.2rem 0;border-bottom:1px dashed #e3d6cc;
@@ -457,13 +457,10 @@
       <div class="prog-list">
         <div class="prog-row reveal"><span class="prog-time">16:00</span><span><span class="prog-name">Skup gostiju</span><br><span class="prog-desc">Dobrodošlica i okupljanje gostiju</span></span></div>
         <div class="prog-row reveal"><span class="prog-time">17:30</span><span><span class="prog-name">Venčanje</span><br><span class="prog-desc">Svečani čin venčanja</span></span></div>
-        <div class="prog-row reveal"><span class="prog-time">19:00</span><span><span class="prog-name">Dolazak na slavlje</span><br><span class="prog-desc">Domaćinstvo Gajić nas dočekuje</span></span></div>
-        <div class="prog-row reveal"><span class="prog-time">20:00</span><span><span class="prog-name">Večera</span><br><span class="prog-desc">Svadbena trpeza</span></span></div>
-        <div class="prog-row reveal"><span class="prog-time">22:00</span><span><span class="prog-name">Prvi ples</span><br><span class="prog-desc">Ples mladenaca</span></span></div>
-        <div class="prog-row reveal"><span class="prog-time">23:00</span><span><span class="prog-name">Veselje</span><br><span class="prog-desc">Igra i pesma do jutra</span></span></div>
-        <div class="prog-row reveal"><span class="prog-time">02:00</span><span><span class="prog-name">Kraj</span><br><span class="prog-desc">Doviđenja i hvala što ste bili sa nama</span></span></div>
+        <div class="prog-row reveal"><span class="prog-time">18:00</span><span><span class="prog-name">Večera</span><br><span class="prog-desc">Očekuje vas bogata večera u formi švedskog stola, na samoposluživanje, da svako pronađe baš ono što voli i uživa bez žurbe.</span></span></div>
+        <div class="prog-row reveal"><span class="prog-time">22:00</span><span><span class="prog-name">Torta i slavlje</span><br><span class="prog-desc">Kada padne veče, slavlje tek počinje! Sledi svečano sečenje torte, a potom muzika, ples i provod do jutarnjih sati. Sve ostalo prepuštamo dobroj atmosferi i vama — našim dragim gostima.</span></span></div>
       </div>
-      <p class="lead" style="margin-top:1.8rem;font-size:1rem;">Skup gostiju je u 16:00, a venčanje u 17:30 — ostala vremena su okvirna.</p>
+      <p class="lead" style="margin-top:1.8rem;font-size:1rem;">Jedva čekamo da ovaj dan podelimo sa vama. 🤍</p>
     </div>
   </section>
 
@@ -504,32 +501,33 @@
     <div class="wrap reveal">
       <p class="eyebrow">Potvrda dolaska</p>
       <p class="lead">Molimo vas da potvrdite svoj dolazak do 1. avgusta kako bismo sve lepo pripremili.</p>
-      <form class="form" id="rsvpForm" onsubmit="return false;">
+      <form class="form" id="rsvpForm">
         <div class="field">
           <label for="name">Ime i prezime *</label>
-          <input type="text" id="name" placeholder="Vaše ime i prezime" required />
+          <input type="text" id="name" name="ime" placeholder="Vaše ime i prezime" required />
         </div>
         <div class="field">
           <label for="email">Email adresa *</label>
-          <input type="email" id="email" placeholder="vas@email.com" required />
+          <input type="email" id="email" name="email" placeholder="vas@email.com" required />
         </div>
         <div class="field">
           <label>Da li ćete prisustvovati? *</label>
           <div class="radio-row">
-            <label class="radio-opt"><input type="radio" name="attend" value="yes" required /> Sa radošću dolazim</label>
-            <label class="radio-opt"><input type="radio" name="attend" value="no" /> Nažalost ne mogu</label>
+            <label class="radio-opt"><input type="radio" name="dolazak" value="Da, dolazim" required /> Sa radošću dolazim</label>
+            <label class="radio-opt"><input type="radio" name="dolazak" value="Nažalost ne mogu" /> Nažalost ne mogu</label>
           </div>
         </div>
         <div class="field">
           <label for="guests">Broj gostiju</label>
-          <input type="text" id="guests" placeholder="npr. 2" />
+          <input type="text" id="guests" name="broj_gostiju" placeholder="npr. 2" />
         </div>
         <div class="field">
           <label for="message">Poruka za mladence</label>
-          <textarea id="message" rows="3" placeholder="Vaše želje i poruke..."></textarea>
+          <textarea id="message" name="poruka" rows="3" placeholder="Vaše želje i poruke..."></textarea>
         </div>
         <button class="btn" type="submit" id="rsvpBtn">Pošalji potvrdu</button>
-        <p class="form-msg" id="rsvpMsg">Hvala vam! Vaša potvrda je zabeležena. ❤<br><small style="font-family:var(--sans);font-size:.7rem;color:#a99c93;letter-spacing:.1em;">(Forma je trenutno vizuelna — povezivanje slanja dodajemo kasnije.)</small></p>
+        <p class="form-msg" id="rsvpMsg">Hvala vam! Vaša potvrda je zabeležena. 🤍</p>
+        <p class="form-msg" id="rsvpErr" style="color:#c0392b;">Nešto nije prošlo. Pokušajte ponovo ili nas kontaktirajte direktno.</p>
       </form>
     </div>
   </section>
@@ -629,12 +627,31 @@
   },{threshold:0.12});
   document.querySelectorAll(".reveal").forEach(function(el){io.observe(el);});
 
-  // ---- RSVP (visual only) ----
-  document.getElementById("rsvpForm").addEventListener("submit",function(){
+  // ---- RSVP via Formspree ----
+  var FORMSPREE_ID = "mjgqkgeo"; // replace with ID from formspree.io/f/xxxxxxxx
+  document.getElementById("rsvpForm").addEventListener("submit",function(e){
+    e.preventDefault();
     var f=document.getElementById("rsvpForm");
     if(!f.checkValidity()){f.reportValidity();return;}
-    document.getElementById("rsvpBtn").style.display="none";
-    document.getElementById("rsvpMsg").classList.add("show");
+    var btn=document.getElementById("rsvpBtn");
+    btn.disabled=true;btn.textContent="Šalje se...";
+    fetch("https://formspree.io/f/"+FORMSPREE_ID,{
+      method:"POST",
+      body:new FormData(f),
+      headers:{Accept:"application/json"}
+    }).then(function(r){
+      if(r.ok){
+        f.reset();
+        btn.style.display="none";
+        document.getElementById("rsvpMsg").classList.add("show");
+      } else {
+        btn.disabled=false;btn.textContent="Pošalji potvrdu";
+        document.getElementById("rsvpErr").classList.add("show");
+      }
+    }).catch(function(){
+      btn.disabled=false;btn.textContent="Pošalji potvrdu";
+      document.getElementById("rsvpErr").classList.add("show");
+    });
   });
 </script>
 </body>
