@@ -40,7 +40,9 @@
     line-height:1.7;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
+    overflow-y:hidden;
   }
+  body.scroll-ready{overflow-y:auto;}
 
   /* ---------- Reveal-on-scroll ---------- */
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease;}
@@ -589,6 +591,8 @@
         document.body.style.setProperty('--zoom-scale',scale);
         document.body.classList.add('zoomed');
       },3500);
+      // unlock scroll after zoom animation completes (3500ms delay + 900ms transition)
+      setTimeout(function(){ document.body.classList.add('scroll-ready'); },4500);
     }
     cover.addEventListener("click",openEnv);
   })();
