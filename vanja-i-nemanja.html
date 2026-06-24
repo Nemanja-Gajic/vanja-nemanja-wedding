@@ -574,7 +574,7 @@
       .catch(function(e){ console.warn('PDF load error:', e); });
   })();
 
-  // ---- Cover: open the envelope on click / first scroll / tap ----
+  // ---- Cover: open the envelope on click / tap ----
   (function(){
     var cover=document.getElementById("cover");
     var opened=false;
@@ -589,16 +589,8 @@
         document.body.style.setProperty('--zoom-scale',scale);
         document.body.classList.add('zoomed');
       },3500);
-      window.removeEventListener("wheel",openEnv);
-      window.removeEventListener("touchmove",openEnv);
-      window.removeEventListener("touchstart",openEnv);
-      window.removeEventListener("keydown",openEnv);
     }
     cover.addEventListener("click",openEnv);
-    window.addEventListener("wheel",openEnv,{passive:true});
-    window.addEventListener("touchmove",openEnv,{passive:true});
-    window.addEventListener("touchstart",openEnv,{passive:true});
-    window.addEventListener("keydown",openEnv);
   })();
 
   // ---- Wedding date (change here) ----
