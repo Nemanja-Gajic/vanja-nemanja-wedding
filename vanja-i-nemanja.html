@@ -232,17 +232,20 @@
     font-size:clamp(.78rem,2.8vw,1.15rem);letter-spacing:.05em;
   }
 
-  /* ---- Tap prompt (absolute below the scene) ---- */
+  /* ---- Tap prompt (fixed to bottom of viewport) ---- */
   .tap{
-    position:absolute;top:calc(50% + 370px + 1rem);left:50%;
+    position:fixed;bottom:2.4rem;left:50%;
     transform:translateX(-50%);white-space:nowrap;
-    font-family:var(--serif);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
+    font-family:var(--serif);font-size:.92rem;letter-spacing:.22em;text-transform:uppercase;
     color:var(--accent-deep);
+    display:flex;flex-direction:column;align-items:center;gap:.45rem;
+    z-index:10;
     animation:tapPulse 2.3s ease-in-out infinite;
     pointer-events:none;
   }
+  .tap::before{content:"↑";font-size:1rem;letter-spacing:0;font-style:normal;}
   body.opened .tap{opacity:0;animation:none;transition:opacity .4s ease;}
-  @keyframes tapPulse{0%,100%{opacity:.38;}50%{opacity:1;}}
+  @keyframes tapPulse{0%,100%{opacity:.55;}50%{opacity:1;}}
 
   /* ---- Scroll hint arrow ---- */
   .scroll-hint{
